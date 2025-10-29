@@ -1,4 +1,4 @@
-#!/usr/local/bin/bats
+#!bats
 # TODO: update path of Bats binary if necessary
 
 # Based on: https://chatgpt.com/share/672baa75-12a4-8005-be19-a2aaf2a52d0a
@@ -25,32 +25,32 @@
 ####################################################################################################
 
 @test "reject commit message without type" {
-  run ./commit-msg-hook "add feature without type" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "add feature without type" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "reject commit message without colon after type" {
-  run ./commit-msg-hook "feat add feature without colon" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat add feature without colon" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "accept commit message with valid default type, colon, and description" {
-  run ./commit-msg-hook "feat: add feature with colon and description" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat: add feature with colon and description" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with valid custom type and colon" {
-  run ./commit-msg-hook "doc: add feature with colon" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "doc: add feature with colon" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "reject commit message with invalid custom type" {
-  run ./commit-msg-hook "invalid: add invalid type" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "invalid: add invalid type" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "reject commit message without description" {
-  run ./commit-msg-hook "feat: " > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat: " > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
@@ -59,16 +59,16 @@
 ####################################################################################################
 
 @test "reject commit message with invalid scope format (underscore)" {
-  run ./commit-msg-hook "feat(invalid_scope): message with invalid scope" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat(invalid_scope): message with invalid scope" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 @test "reject commit message with invalid scope format (whitespace)" {
-  run ./commit-msg-hook "feat(invalid scope): message with invalid scope" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat(invalid scope): message with invalid scope" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "accept commit message with valid scope format" {
-  run ./commit-msg-hook "feat(api): message with valid scope" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat(api): message with valid scope" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
@@ -77,17 +77,17 @@
 ####################################################################################################
 
 @test "reject commit message with body starting immediately after description" {
-  run ./commit-msg-hook "$(printf "feat: short description\nextra body")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\nextra body" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "reject commit message with empty body" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\n ")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\n " > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "accept commit message with body beginning one blank line after description" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nadditional details in body")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat: short description\n\nadditional details in body" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
@@ -97,27 +97,27 @@
 ####################################################################################################
 
 @test "accept commit message with valid footer format (colon)" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nReviewed-by: Z")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nReviewed-by: Z" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "reject commit message with valid footer format (colon) but invalid footer token" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nReviewed by: Z")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nReviewed by: Z" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "accept commit message with body and valid footer format (colon)" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nBody\n\nReviewed-by: Z")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nBody\n\nReviewed-by: Z" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with body and valid footer format (hash)" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nBody\n\nFix #42")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nBody\n\nFix #42" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with body and valid footer format (colon) with whitespace and newline" {
-  run ./commit-msg-hook "$(printf "feat: short description\n\nBody\n\nReviewed-by: Sebastian Baltes\n<sebastian.baltes@uni-bayreuth.de>\nFix #42")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nBody\n\nReviewed-by: Sebastian Baltes\n<sebastian.baltes@uni-bayreuth.de>\nFix #42" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
@@ -129,27 +129,27 @@
 ####################################################################################################
 
 @test "reject commit message with invalid breaking change footer format (no description)" {
-  run ./commit-msg-hook "$(printf "feat: breaking change without '!'\n\nBREAKING CHANGE")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: breaking change without '!'\n\nBREAKING CHANGE" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "reject commit message with invalid breaking change footer format (missing colon)" {
-  run ./commit-msg-hook "$(printf "feat: update function\n\nBREAKING CHANGE new function behavior")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: update function\n\nBREAKING CHANGE new function behavior" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
 
 @test "accept commit message with breaking change indicated by '!'" {
-  run ./commit-msg-hook "feat!: change with breaking impact" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat!: change with breaking impact" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with BREAKING CHANGE in footer" {
-  run ./commit-msg-hook "$(printf "feat: non-breaking change\n\nBREAKING CHANGE: new API behavior")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: non-breaking change\n\nBREAKING CHANGE: new API behavior" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with BREAKING-CHANGE footer" {
-  run ./commit-msg-hook "$(printf "feat: new API\n\nBREAKING-CHANGE: modifies request handling")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: new API\n\nBREAKING-CHANGE: modifies request handling" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
@@ -158,16 +158,16 @@
 ####################################################################################################
 
 @test "accept commit message with lowercase type and description" {
-  run ./commit-msg-hook "feat: lowercase type and description" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "feat: lowercase type and description" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "accept commit message with uppercase type and description" {
-  run ./commit-msg-hook "FEAT: UPPERCASE TYPE AND DESCRIPTION" > /dev/null 2>&1
+  run java ./CommitMsgHook.java "FEAT: UPPERCASE TYPE AND DESCRIPTION" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
 @test "reject commit message with lowercase breaking change footer" {
-  run ./commit-msg-hook "$(printf "feat: some feature\n\nbreaking change: lowercase breaking")" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: some feature\n\nbreaking change: lowercase breaking" > /dev/null 2>&1
   [ "$status" -eq 1 ]
 }
