@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class CommitMsgHook {
     public static void main(String[] args) {
-        String commitMessage = args[0];
+        String commitMessage = ("test: short description\n\nReviewed-by: Z"); // args[0];
 
         StringBuilder stringBuilder = new StringBuilder();
 

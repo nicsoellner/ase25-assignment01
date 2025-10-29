@@ -97,7 +97,7 @@
 ####################################################################################################
 
 @test "accept commit message with valid footer format (colon)" {
-  run java ./CommitMsgHook.java run java ./CommitMsgHook.java "feat: short description\n\nReviewed-by: Z" > /dev/null 2>&1
+  run java ./CommitMsgHook.java run java ./CommitMsgHook.java  "$(printf "feat: short description\n\nReviewed-by: Z")" > /dev/null 2>&1
   [ "$status" -eq 0 ]
 }
 
